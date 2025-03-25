@@ -656,57 +656,31 @@ body {
             }
         });
     </script>
-<!-- JSONBin.io API集成 -->
 <script>
-  // 您的JSONBin.io API密钥
-  const API_KEY = "$2a$10$RjpRj8AX9E088EFGfKRkpeie2eVCYz5opIU3nRsywK0lFtDSFo0$i";
-  
-  // 从localStorage获取BIN_ID
-  const BIN_ID = localStorage.getItem('artMatchBinId');
-  
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('当前BIN_ID:', BIN_ID);
+    // 获取URL中的参数
+    const urlParams = new URLSearchParams(window.location.search);
     
-    // 如果有BIN_ID，从JSONBin获取数据
-    if (BIN_ID) {
-      console.log('正在从JSONBin获取数据...');
+    // 检查是否有参数
+    if (urlParams.toString()) {
+      console.log('从URL获取的参数:', urlParams.toString());
       
-      fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'GET',
-        headers: {
-          'X-Master-Key': API_KEY
-        }
-      }) 
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('网络响应不正常');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('从JSONBin获取的数据:', data);
+      // 遍历所有参数并填充到对应的输入框中
+      for (const [key, value] of urlParams.entries()) {
+        // 跳过timestamp参数
+        if (key === 'timestamp') continue;
         
-        if (data && data.record) {
-          // 使用获取的数据更新页面
-          updatePageWithData(data.record);
+        // 查找对应名称的输入框
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          input.value = value;
         }
-      })
-      .catch(error => {
-        console.error('获取数据出错:', error);
-      });
-    } else {
-      console.log('没有找到BIN_ID，无法从JSONBin获取数据');
-    }
-    
-    // 使用获取的数据更新页面的函数
-    function updatePageWithData(data) {
-      // 这个函数需要根据您的实际页面结构来实现
-      console.log('准备使用数据更新页面:', data);
+      }
       
-      // 例如，如果数据包含projects数组
-      if (data.projects && Array.isArray(data.projects)) {
-        // 更新页面上的项目列表
-        // 这里需要根据您的实际页面结构来实现
+      // 如果有查询按钮，可以自动点击它
+      const searchButton = document.querySelector('button');
+      if (searchButton) {
+        searchButton.click();
       }
     }
   });
