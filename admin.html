@@ -1326,108 +1326,46 @@ body {
             }
         });
     </script>
-        <!-- JSONBin.io API集成 -->
 <script>
-  // 您的JSONBin.io API密钥
-  const API_KEY = "$2a$10$RjpRj8AX9E08BEFGfKRkpeie2eVCYz5opIU3nRsywK0IFlD5Fo05i"; // 替换为您的API密钥
-  const BIN_ID = ""; // 我们稍后会创建并填写这个ID
-  
-  // 登录成功后的函数
-  function loginSuccess() {
-    // 从JSONBin获取数据
-    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-      headers: {
-        'X-Master-Key': API_KEY
-      }
-    }) 
-    .then(response => response.json())
-    .then(data => {
-      // 如果有数据，显示在管理界面
-      if (data && data.record) {
-        // 这里需要根据您的具体数据结构来处理
-        // 例如：displayDataInAdminPanel(data.record);
-        console.log("从JSONBin获取的数据:", data.record);
-      }
-    })
-    .catch(error => {
-      console.error("获取数据出错:", error);
-    });
-  }
-  
-  // 保存数据到JSONBin
-  function saveDataToJSONBin(data) {
-    // 如果BIN_ID为空，创建新的bin
-    if (!BIN_ID) {
-      fetch('https://api.jsonbin.io/v3/b', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY
-        },
-        body: JSON.stringify(data) 
-      })
-      .then(response => response.json())
-      .then(result => {
-        // 保存新创建的BIN_ID
-        const newBinId = result.metadata.id;
-        alert(`请复制这个BIN_ID并更新代码中的BIN_ID变量: ${newBinId}`);
-        console.log("新创建的BIN_ID:", newBinId);
-      })
-      .catch(error => {
-        console.error("创建数据出错:", error);
-        alert("保存失败，请查看控制台错误信息");
-      });
-    } else {
-      // 更新现有的bin
-      fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': API_KEY
-        },
-        body: JSON.stringify(data) 
-      })
-      .then(response => response.json())
-      .then(result => {
-        alert("数据保存成功！");
-        console.log("数据更新成功:", result);
-      })
-      .catch(error => {
-        console.error("更新数据出错:", error);
-        alert("保存失败，请查看控制台错误信息");
-      });
-    }
-  }
-  
-  // 找到原来保存数据的按钮并修改其事件处理
   document.addEventListener('DOMContentLoaded', function() {
-    // 假设有一个保存按钮
-    const saveButton = document.querySelector('button[type="submit"]');
-    if (saveButton) {
-      saveButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // 收集表单数据
-        // 这里需要根据您的具体表单结构来收集数据
-        const formData = {
-          // 例如：projects: collectProjectsData()
-          // 这里只是一个示例，需要根据您的实际数据结构调整
-          timestamp: new Date().toISOString(),
-          data: "这里放置您的实际数据"
-        };
-        
-        // 保存到JSONBin
-        saveDataToJSONBin(formData);
-        
-        // 同时保存到localStorage作为备份
-        localStorage.setItem('artProjects', JSON.stringify(formData));
-      });
-    }
+    // 找到所有按钮
+    const buttons = document.querySelectorAll('button');
     
-    // 如果已经登录，获取数据
-    if (document.querySelector('.admin-panel')) {
-      loginSuccess();
-    }
+    // 为每个按钮添加点击事件
+    buttons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        // 收集页面上的数据
+        // 这里需要根据您的实际页面结构来收集数据
+        // 例如，假设您有一些输入框和选择框
+        const inputs = document.querySelectorAll('input, select');
+        let dataString = '';
+        
+        inputs.forEach(input => {
+          if (input.name && input.value) {
+            dataString += `${input.name}=${encodeURIComponent(input.value)}&`;
+          }
+        });
+        
+        // 移除最后一个&符号
+        if (dataString.endsWith('&')) {
+          dataString = dataString.slice(0, -1);
+        }
+        
+        // 生成包含数据的URL
+        const dataUrl = `https://hwx1995.github.io/art-match/index.html?${dataString}&timestamp=${Date.now() }`;
+        
+        // 显示生成的URL
+        alert('请复制以下链接并在其他设备上使用它来查看相同的数据：\n\n' + dataUrl);
+        
+        // 也可以将URL保存到localStorage作为历史记录
+        const savedUrls = JSON.parse(localStorage.getItem('dataUrls') || '[]');
+        savedUrls.push({
+          url: dataUrl,
+          date: new Date().toLocaleString()
+        });
+        localStorage.setItem('dataUrls', JSON.stringify(savedUrls));
+      });
+    });
   });
 </script>
 </body>
