@@ -685,5 +685,54 @@ body {
     }
   });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 添加一个随机参数避免缓存
+    const cacheBuster = '?_=' + new Date().getTime();
+    
+    // 获取数据文件
+    fetch('data.json' + cacheBuster)
+      .then(response => response.json())
+      .then(data => {
+        console.log('从data.json获取的数据:', data);
+        
+        // 使用数据更新页面
+        if (data && data.projects) {
+          updatePageWithData(data.projects);
+        }
+      })
+      .catch(error => {
+        console.error('获取数据出错:', error);
+      });
+    
+    // 使用数据更新页面的函数
+    function updatePageWithData(projects) {
+      // 这个函数需要根据您的实际页面结构来实现
+      console.log('准备使用数据更新页面:', projects);
+      
+      // 例如，如果您的页面有一个显示项目的区域
+      const projectContainer = document.querySelector('.project-list') || document.querySelector('.results');
+      if (projectContainer) {
+        // 清空现有内容
+        projectContainer.innerHTML = '';
+        
+        // 添加新内容
+        projects.forEach(project => {
+          const projectElement = document.createElement('div');
+          projectElement.className = 'project-item';
+          
+          // 根据您的数据结构和页面设计调整这部分
+          projectElement.innerHTML = `
+            <h3>${project.name || ''}</h3>
+            <p>年龄: ${project.age || ''}</p>
+            <p>科目: ${project.subject || ''}</p>
+          `;
+          
+          projectContainer.appendChild(projectElement);
+        });
+      }
+    }
+  });
+</script>
 </body>
 </html>
