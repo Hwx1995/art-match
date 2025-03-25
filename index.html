@@ -8,61 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
         /* 仙堇艺术赛事考级匹配系统样式 */
-        <!-- JSONBin.io API集成 -->
-<script>
-  // 您的JSONBin.io API密钥和BIN_ID（与admin.html中保持一致）
-  const API_KEY = "$2a$10$RjpRj8AX9E08BEFGfKRkpeie2eVCYz5opIU3nRsywK0IFlD5Fo05i"; // 替换为您的API密钥
-  const BIN_ID = ""; // 与admin.html中使用相同的BIN_ID
-  
-  document.addEventListener('DOMContentLoaded', function() {
-    // 从JSONBin获取数据
-    if (BIN_ID) {
-      fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        headers: {
-          'X-Master-Key': API_KEY
-        }
-      }) 
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.record) {
-          // 使用从JSONBin获取的数据更新页面
-          // 这里需要根据您的具体数据结构来处理
-          console.log("从JSONBin获取的数据:", data.record);
-          // 例如：updateUIWithData(data.record);
-        } else {
-          // 如果JSONBin没有数据，尝试从localStorage获取
-          const localData = localStorage.getItem('artProjects');
-          if (localData) {
-            const parsedData = JSON.parse(localData);
-            // 使用localStorage的数据更新页面
-            console.log("从localStorage获取的数据:", parsedData);
-            // 例如：updateUIWithData(parsedData);
-          }
-        }
-      })
-      .catch(error => {
-        console.error("获取数据出错:", error);
-        // 出错时尝试从localStorage获取
-        const localData = localStorage.getItem('artProjects');
-        if (localData) {
-          const parsedData = JSON.parse(localData);
-          // 使用localStorage的数据更新页面
-          console.log("从localStorage获取的数据:", parsedData);
-          // 例如：updateUIWithData(parsedData);
-        }
-      });
-    } else {
-      // 如果没有设置BIN_ID，使用localStorage
-      const localData = localStorage.getItem('artProjects');
-      if (localData) {
-        const parsedData = JSON.parse(localData);
-        // 使用localStorage的数据更新页面
-        console.log("从localStorage获取的数据:", parsedData);
-        // 例如：updateUIWithData(parsedData);
-      }
-    }
-  });
-</script>
 body {
             font-family: 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
@@ -711,5 +656,60 @@ body {
             }
         });
     </script>
+        <!-- JSONBin.io API集成 -->
+<script>
+  // 您的JSONBin.io API密钥和BIN_ID（与admin.html中保持一致）
+  const API_KEY = "$2a$10$RjpRj8AX9E08BEFGfKRkpeie2eVCYz5opIU3nRsywK0IFlD5Fo05i"; // 替换为您的API密钥
+  const BIN_ID = ""; // 与admin.html中使用相同的BIN_ID
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // 从JSONBin获取数据
+    if (BIN_ID) {
+      fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        headers: {
+          'X-Master-Key': API_KEY
+        }
+      }) 
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.record) {
+          // 使用从JSONBin获取的数据更新页面
+          // 这里需要根据您的具体数据结构来处理
+          console.log("从JSONBin获取的数据:", data.record);
+          // 例如：updateUIWithData(data.record);
+        } else {
+          // 如果JSONBin没有数据，尝试从localStorage获取
+          const localData = localStorage.getItem('artProjects');
+          if (localData) {
+            const parsedData = JSON.parse(localData);
+            // 使用localStorage的数据更新页面
+            console.log("从localStorage获取的数据:", parsedData);
+            // 例如：updateUIWithData(parsedData);
+          }
+        }
+      })
+      .catch(error => {
+        console.error("获取数据出错:", error);
+        // 出错时尝试从localStorage获取
+        const localData = localStorage.getItem('artProjects');
+        if (localData) {
+          const parsedData = JSON.parse(localData);
+          // 使用localStorage的数据更新页面
+          console.log("从localStorage获取的数据:", parsedData);
+          // 例如：updateUIWithData(parsedData);
+        }
+      });
+    } else {
+      // 如果没有设置BIN_ID，使用localStorage
+      const localData = localStorage.getItem('artProjects');
+      if (localData) {
+        const parsedData = JSON.parse(localData);
+        // 使用localStorage的数据更新页面
+        console.log("从localStorage获取的数据:", parsedData);
+        // 例如：updateUIWithData(parsedData);
+      }
+    }
+  });
+</script>
 </body>
 </html>
