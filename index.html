@@ -656,57 +656,57 @@ body {
             }
         });
     </script>
-        <!-- JSONBin.io API集成 -->
+<!-- JSONBin.io API集成 -->
 <script>
-  // 您的JSONBin.io API密钥和BIN_ID（与admin.html中保持一致）
-  const API_KEY = "$2a$10$RjpRj8AX9E08BEFGfKRkpeie2eVCYz5opIU3nRsywK0IFlD5Fo05i"; // 替换为您的API密钥
-  const BIN_ID = ""; // 与admin.html中使用相同的BIN_ID
+  // 您的JSONBin.io API密钥
+  const API_KEY = "$2a$10$RjpRj8AX9E088EFGfKRkpeie2eVCYz5opIU3nRsywK0lFtDSFo0$i";
+  
+  // 从localStorage获取BIN_ID
+  const BIN_ID = localStorage.getItem('artMatchBinId');
   
   document.addEventListener('DOMContentLoaded', function() {
-    // 从JSONBin获取数据
+    console.log('当前BIN_ID:', BIN_ID);
+    
+    // 如果有BIN_ID，从JSONBin获取数据
     if (BIN_ID) {
+      console.log('正在从JSONBin获取数据...');
+      
       fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'GET',
         headers: {
           'X-Master-Key': API_KEY
         }
       }) 
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('网络响应不正常');
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log('从JSONBin获取的数据:', data);
+        
         if (data && data.record) {
-          // 使用从JSONBin获取的数据更新页面
-          // 这里需要根据您的具体数据结构来处理
-          console.log("从JSONBin获取的数据:", data.record);
-          // 例如：updateUIWithData(data.record);
-        } else {
-          // 如果JSONBin没有数据，尝试从localStorage获取
-          const localData = localStorage.getItem('artProjects');
-          if (localData) {
-            const parsedData = JSON.parse(localData);
-            // 使用localStorage的数据更新页面
-            console.log("从localStorage获取的数据:", parsedData);
-            // 例如：updateUIWithData(parsedData);
-          }
+          // 使用获取的数据更新页面
+          updatePageWithData(data.record);
         }
       })
       .catch(error => {
-        console.error("获取数据出错:", error);
-        // 出错时尝试从localStorage获取
-        const localData = localStorage.getItem('artProjects');
-        if (localData) {
-          const parsedData = JSON.parse(localData);
-          // 使用localStorage的数据更新页面
-          console.log("从localStorage获取的数据:", parsedData);
-          // 例如：updateUIWithData(parsedData);
-        }
+        console.error('获取数据出错:', error);
       });
     } else {
-      // 如果没有设置BIN_ID，使用localStorage
-      const localData = localStorage.getItem('artProjects');
-      if (localData) {
-        const parsedData = JSON.parse(localData);
-        // 使用localStorage的数据更新页面
-        console.log("从localStorage获取的数据:", parsedData);
-        // 例如：updateUIWithData(parsedData);
+      console.log('没有找到BIN_ID，无法从JSONBin获取数据');
+    }
+    
+    // 使用获取的数据更新页面的函数
+    function updatePageWithData(data) {
+      // 这个函数需要根据您的实际页面结构来实现
+      console.log('准备使用数据更新页面:', data);
+      
+      // 例如，如果数据包含projects数组
+      if (data.projects && Array.isArray(data.projects)) {
+        // 更新页面上的项目列表
+        // 这里需要根据您的实际页面结构来实现
       }
     }
   });
