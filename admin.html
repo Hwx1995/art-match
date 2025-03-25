@@ -8,7 +8,111 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
         /* 仙堇艺术赛事考级匹配系统管理后台样式 */
-        body {
+        <!-- JSONBin.io API集成 -->
+<script>
+  // 您的JSONBin.io API密钥
+  const API_KEY = "YOUR_API_KEY"; // 替换为您的API密钥
+  const BIN_ID = ""; // 我们稍后会创建并填写这个ID
+  
+  // 登录成功后的函数
+  function loginSuccess() {
+    // 从JSONBin获取数据
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      headers: {
+        'X-Master-Key': API_KEY
+      }
+    }) 
+    .then(response => response.json())
+    .then(data => {
+      // 如果有数据，显示在管理界面
+      if (data && data.record) {
+        // 这里需要根据您的具体数据结构来处理
+        // 例如：displayDataInAdminPanel(data.record);
+        console.log("从JSONBin获取的数据:", data.record);
+      }
+    })
+    .catch(error => {
+      console.error("获取数据出错:", error);
+    });
+  }
+  
+  // 保存数据到JSONBin
+  function saveDataToJSONBin(data) {
+    // 如果BIN_ID为空，创建新的bin
+    if (!BIN_ID) {
+      fetch('https://api.jsonbin.io/v3/b', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify(data) 
+      })
+      .then(response => response.json())
+      .then(result => {
+        // 保存新创建的BIN_ID
+        const newBinId = result.metadata.id;
+        alert(`请复制这个BIN_ID并更新代码中的BIN_ID变量: ${newBinId}`);
+        console.log("新创建的BIN_ID:", newBinId);
+      })
+      .catch(error => {
+        console.error("创建数据出错:", error);
+        alert("保存失败，请查看控制台错误信息");
+      });
+    } else {
+      // 更新现有的bin
+      fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify(data) 
+      })
+      .then(response => response.json())
+      .then(result => {
+        alert("数据保存成功！");
+        console.log("数据更新成功:", result);
+      })
+      .catch(error => {
+        console.error("更新数据出错:", error);
+        alert("保存失败，请查看控制台错误信息");
+      });
+    }
+  }
+  
+  // 找到原来保存数据的按钮并修改其事件处理
+  document.addEventListener('DOMContentLoaded', function() {
+    // 假设有一个保存按钮
+    const saveButton = document.querySelector('button[type="submit"]');
+    if (saveButton) {
+      saveButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // 收集表单数据
+        // 这里需要根据您的具体表单结构来收集数据
+        const formData = {
+          // 例如：projects: collectProjectsData()
+          // 这里只是一个示例，需要根据您的实际数据结构调整
+          timestamp: new Date().toISOString(),
+          data: "这里放置您的实际数据"
+        };
+        
+        // 保存到JSONBin
+        saveDataToJSONBin(formData);
+        
+        // 同时保存到localStorage作为备份
+        localStorage.setItem('artProjects', JSON.stringify(formData));
+      });
+    }
+    
+    // 如果已经登录，获取数据
+    if (document.querySelector('.admin-panel')) {
+      loginSuccess();
+    }
+  });
+</script>
+body {
             font-family: 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
             background-attachment: fixed;
