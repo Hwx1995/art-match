@@ -1368,5 +1368,61 @@ body {
     });
   });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 找到所有保存按钮
+    const saveButtons = document.querySelectorAll('button');
+    
+    // 为每个按钮添加点击事件
+    saveButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        // 收集页面上的数据
+        // 这里需要根据您的实际页面结构来收集数据
+        const data = {
+          timestamp: new Date().toISOString(),
+          // 例如，收集表格数据
+          projects: collectPageData()
+        };
+        
+        // 将数据转换为JSON字符串
+        const jsonData = JSON.stringify(data, null, 2);
+        
+        // 创建下载链接
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        a.click();
+        
+        // 显示说明
+        alert('数据文件已下载。请按照以下步骤更新GitHub仓库：\n\n1. 登录GitHub\n2. 进入您的art-match仓库\n3. 找到data.json文件并点击它\n4. 点击右上角的铅笔图标编辑文件\n5. 删除所有内容，粘贴新下载的data.json文件内容\n6. 点击"Commit changes"提交更改');
+      });
+    });
+    
+    // 从页面收集数据的函数
+    function collectPageData() {
+      // 这个函数需要根据您的实际页面结构来实现
+      // 这里只是一个示例
+      const data = [];
+      
+      // 例如，收集表格数据
+      const rows = document.querySelectorAll('table tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if(cells.length > 0) {
+          const rowData = {
+            name: cells[0]?.textContent || '',
+            age: cells[1]?.textContent || '',
+            subject: cells[2]?.textContent || ''
+          };
+          data.push(rowData);
+        }
+      });
+      
+      return data;
+    }
+  });
+</script>
 </body>
 </html>
