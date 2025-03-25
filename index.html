@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙堇艺术赛事考级匹配工具</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        /* 仙堇艺术赛事考级匹配系统样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+            background-attachment: fixed;
+            padding-bottom: 50px;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #a18cd1, #6a5acd);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .header h1 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: #5e35b1;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #a18cd1;
+            box-shadow: 0 0 0 0.25rem rgba(161, 140, 209, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #9d50bb, #6a5acd);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(106, 90, 205, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #8e44ad, #5d4cb6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 90, 205, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(106, 90, 205, 0.3);
+        }
+
+        .result-card {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-img {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .result-body {
+            padding: 15px;
+        }
+
+        .result-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #5e35b1;
+            margin-bottom: 8px;
+        }
+
+        .result-type {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .result-type.competition {
+            background-color: #e1bee7;
+            color: #6a1b9a;
+        }
+
+        .result-type.exam {
+            background-color: #bbdefb;
+            color: #0d47a1;
+        }
+
+        .result-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .result-subjects {
+            margin-top: 10px;
+        }
+
+        .subject-badge {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #a18cd1, #6a5acd);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .detail-img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #5e35b1;
+            margin-bottom: 10px;
+        }
+
+        .detail-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        .detail-info {
+            margin-bottom: 10px;
+        }
+
+        .detail-description {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .detail-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #5e35b1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .detail-link:hover {
+            color: #4527a0;
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .admin-link {
+            color: #5e35b1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .admin-link:hover {
+            color: #4527a0;
+            text-decoration: underline;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 0;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            .modal-dialog {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <h1>仙堇艺术赛事考级匹配工具</h1>
+        <p>查询适合您的艺术项目赛事或考级</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">查询条件</h5>
+                        <form id="searchForm">
+                            <div class="mb-3">
+                                <label for="age" class="form-label">年龄</label>
+                                <input type="number" class="form-control" id="age" min="3" max="100" placeholder="请输入年龄" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">美术科目</label>
+                                <select class="form-select" id="subject" required>
+                                    <option value="" selected disabled>请选择科目</option>
+                                    <option value="素描">素描</option>
+                                    <option value="水彩">水彩</option>
+                                    <option value="水粉">水粉</option>
+                                    <option value="油画">油画</option>
+                                    <option value="漫画">漫画</option>
+                                    <option value="设计稿">设计稿</option>
+                                    <option value="手工">手工</option>
+                                    <option value="儿童画">儿童画</option>
+                                    <option value="板绘">板绘</option>
+                                    <option value="速写">速写</option>
+                                    <option value="书法">书法</option>
+                                    <option value="国画">国画</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">项目类型</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="typeCompetition" checked>
+                                    <label class="form-check-label" for="typeCompetition">
+                                        赛事
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="typeExam" checked>
+                                    <label class="form-check-label" for="typeExam">
+                                        考级
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary py-2">
+                                    <i class="bi bi-search me-2"></i>查询匹配项目
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div id="resultsContainer">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="bi bi-arrow-left-circle" style="font-size: 3rem; color: #a18cd1;"></i>
+                            <h5 class="mt-3">请输入查询条件</h5>
+                            <p class="text-muted">填写左侧表单并点击查询按钮，查看适合您的艺术项目</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 项目详情模态框 -->
+    <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectDetailModalLabel">项目详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="projectDetailContent">
+                    <!-- 项目详情内容将在这里动态生成 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>仙堇艺术赛事考级匹配系统 &copy; 2025</p>
+        <p><a href="admin.html" class="admin-link">管理员入口</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 仙堇艺术赛事考级匹配系统脚本 - 本地版本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const searchForm = document.getElementById('searchForm');
+            const ageInput = document.getElementById('age');
+            const subjectSelect = document.getElementById('subject');
+            const typeCompetition = document.getElementById('typeCompetition');
+            const typeExam = document.getElementById('typeExam');
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            // 搜索表单提交事件
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                try {
+                    // 获取表单值
+                    const age = parseInt(ageInput.value);
+                    const subject = subjectSelect.value;
+                    const includeCompetition = typeCompetition.checked;
+                    const includeExam = typeExam.checked;
+                    
+                    // 验证表单
+                    if (isNaN(age) || age < 3 || age > 100 || !subject) {
+                        alert('请填写有效的年龄和选择美术科目');
+                        return;
+                    }
+                    
+                    if (!includeCompetition && !includeExam) {
+                        alert('请至少选择一种项目类型');
+                        return;
+                    }
+                    
+                    // 显示加载状态
+                    resultsContainer.innerHTML = `
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">加载中...</span>
+                                </div>
+                                <h5 class="mt-3">正在查询匹配项目</h5>
+                                <p class="text-muted">请稍候...</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 从本地存储获取项目数据，如果没有则使用默认数据
+                    let allProjects = [];
+                    try {
+                        const savedProjects = localStorage.getItem('xianjunProjects');
+                        if (savedProjects) {
+                            allProjects = JSON.parse(savedProjects);
+                        } else {
+                            allProjects = getMockProjects();
+                            // 保存到本地存储
+                            localStorage.setItem('xianjunProjects', JSON.stringify(allProjects));
+                        }
+                    } catch (error) {
+                        console.error('获取项目数据错误:', error);
+                        allProjects = getMockProjects();
+                    }
+                    
+                    // 筛选匹配的项目
+                    const matchedProjects = allProjects.filter(project => {
+                        // 检查年龄是否在范围内
+                        const ageMatch = age >= project.min_age && age <= project.max_age;
+                        
+                        // 检查科目是否匹配
+                        const subjectMatch = project.subjects && project.subjects.includes(subject);
+                        
+                        // 检查项目类型是否匹配
+                        const typeMatch = (includeCompetition && project.type === '赛事') || 
+                                         (includeExam && project.type === '考级');
+                        
+                        return ageMatch && subjectMatch && typeMatch;
+                    });
+                    
+                    // 显示结果
+                    setTimeout(() => {
+                        displayResults(matchedProjects);
+                    }, 500);
+                } catch (error) {
+                    console.error('搜索处理错误:', error);
+                    resultsContainer.innerHTML = `
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: #dc3545;"></i>
+                                <h5 class="mt-3">搜索出错</h5>
+                                <p class="text-muted">请刷新页面重试</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            // 显示搜索结果
+            function displayResults(projects) {
+                if (projects.length === 0) {
+                    // 没有匹配的项目
+                    resultsContainer.innerHTML = `
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <i class="bi bi-emoji-frown" style="font-size: 3rem; color: #a18cd1;"></i>
+                                <h5 class="mt-3">未找到匹配项目</h5>
+                                <p class="text-muted">请尝试调整查询条件</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // 创建结果HTML
+                let resultsHTML = `
+                    <h4 class="mb-4">找到 ${projects.length} 个匹配项目</h4>
+                    <div class="row">
+                `;
+                
+                // 添加每个项目卡片
+                projects.forEach(project => {
+                    resultsHTML += `
+                        <div class="col-md-6 col-lg-6 mb-4">
+                            <div class="card result-card h-100">
+                                <img src="${project.image_path || 'https://via.placeholder.com/300x180?text=无图片'}" 
+                                     class="result-img" alt="${project.name}"
+                                     onerror="this.src='https://via.placeholder.com/300x180?text=图片加载失败'">
+                                <div class="result-body">
+                                    <h5 class="result-title">${project.name}</h5>
+                                    <span class="result-type ${project.type === '赛事' ? 'competition' : 'exam'}">${project.type}</span>
+                                    <p class="result-info mt-2">适合年龄: ${project.min_age}-${project.max_age}岁</p>
+                                    <div class="result-subjects">
+                                        ${(project.subjects || []).map(subject => 
+                                            `<span class="subject-badge">${subject}</span>`
+                                        ).join('')}
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-sm btn-primary view-details" data-id="${project.id}">
+                                            查看详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsHTML += `
+                    </div>
+                `;
+                
+                // 更新结果容器
+                resultsContainer.innerHTML = resultsHTML;
+                
+                // 为详情按钮添加事件监听器
+                document.querySelectorAll('.view-details').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const projectId = parseInt(this.getAttribute('data-id'));
+                        showProjectDetail(projectId);
+                    });
+                });
+            }
+            
+            // 显示项目详情
+            function showProjectDetail(projectId) {
+                try {
+                    // 从本地存储获取项目数据
+                    let allProjects = [];
+                    const savedProjects = localStorage.getItem('xianjunProjects');
+                    if (savedProjects) {
+                        allProjects = JSON.parse(savedProjects);
+                    } else {
+                        allProjects = getMockProjects();
+                    }
+                    
+                    // 查找项目
+                    const project = allProjects.find(p => p.id === projectId);
+                    
+                    if (!project) {
+                        alert('找不到项目信息');
+                        return;
+                    }
+                    
+                    // 创建详情HTML
+                    const detailHTML = `
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img src="${project.image_path || 'https://via.placeholder.com/300x300?text=无图片'}" 
+                                     class="detail-img" alt="${project.name}"
+                                     onerror="this.src='https://via.placeholder.com/300x300?text=图片加载失败'">
+                            </div>
+                            <div class="col-md-7">
+                                <h4 class="detail-title">${project.name}</h4>
+                                <span class="detail-type ${project.type === '赛事' ? 'competition' : 'exam'}">${project.type}</span>
+                                <p class="detail-info">适合年龄: ${project.min_age}-${project.max_age}岁</p>
+                                <div class="detail-subjects mb-3">
+                                    ${(project.subjects || []).map(subject => 
+                                        `<span class="subject-badge">${subject}</span>`
+                                    ).join('')}
+                                </div>
+                                <div class="detail-description">
+                                    ${project.description || '暂无详细描述'}
+                                </div>
+                                ${project.link_url ? 
+                                    `<a href="${project.link_url}" target="_blank" class="detail-link">
+                                        <i class="bi bi-link-45deg"></i> 访问官方网站
+                                    </a>` : 
+                                    ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 更新模态框内容
+                    document.getElementById('projectDetailContent').innerHTML = detailHTML;
+                    
+                    // 显示模态框
+                    const modal = new bootstrap.Modal(document.getElementById('projectDetailModal'));
+                    modal.show();
+                } catch (error) {
+                    console.error('显示项目详情错误:', error);
+                    alert('显示项目详情时出错，请重试');
+                }
+            }
+            
+            // 获取模拟项目数据
+            function getMockProjects() {
+                return [
+                    {
+                        id: 1,
+                        name: "全国青少年美术大赛",
+                        type: "赛事",
+                        min_age: 6,
+                        max_age: 18,
+                        description: "面向全国青少年的综合性美术比赛，设有多个组别和多种参赛类别。比赛旨在发掘青少年艺术人才，促进艺术教育发展。参赛作品将由专业评委团队评审，优秀作品有机会在全国巡展中展出。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国青少年美术大赛",
+                        subjects: ["素描", "水彩", "水粉", "油画", "漫画"],
+                        link_url: "https://example.com/youth-art-competition"
+                    },
+                    {
+                        id: 2,
+                        name: "中国美术学院考级",
+                        type: "考级",
+                        min_age: 5,
+                        max_age: 25,
+                        description: "由中国美术学院主办的全国性美术等级考试，共设十级。考试内容涵盖基础造型、色彩表现、创意构成等方面，全面考察考生的美术基础和专业技能。考级证书在艺术升学和专业发展中具有一定参考价值。",
+                        image_path: "https://via.placeholder.com/300x200?text=中国美术学院考级",
+                        subjects: ["素描", "水彩", "水粉", "国画", "书法"],
+                        link_url: "https://example.com/art-academy-exam"
+                    },
+                    {
+                        id: 3,
+                        name: "国际儿童绘画展",
+                        type: "赛事",
+                        min_age: 4,
+                        max_age: 12,
+                        description: "国际性儿童绘画比赛，旨在发掘儿童艺术天赋，促进国际文化交流。参赛作品将在多个国家巡回展出，获奖作品将被收录在国际儿童艺术年鉴中。比赛注重儿童的创造力和想象力，鼓励自由表达。",
+                        image_path: "https://via.placeholder.com/300x200?text=国际儿童绘画展",
+                        subjects: ["儿童画", "水彩", "手工"],
+                        link_url: "https://example.com/international-children-art"
+                    },
+                    {
+                        id: 4,
+                        name: "全国动漫设计大赛",
+                        type: "赛事",
+                        min_age: 12,
+                        max_age: 30,
+                        description: "面向青少年和青年的动漫设计比赛，包括原创角色、故事板、短篇漫画等类别。大赛由国内知名动漫企业和教育机构联合举办，旨在发掘动漫创作人才。获奖者有机会获得实习或就业机会。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国动漫设计大赛",
+                        subjects: ["漫画", "板绘", "设计稿"],
+                        link_url: "https://example.com/animation-design-competition"
+                    },
+                    {
+                        id: 5,
+                        name: "中央美术学院附中考级",
+                        type: "考级",
+                        min_age: 8,
+                        max_age: 18,
+                        description: "由中央美术学院附属中学举办的美术等级考试，注重基础技能的培养和评估。考试分为初级、中级和高级三个阶段，每个阶段设有不同的考核标准。考级证书在艺术类院校招生中具有一定参考价值。",
+                        image_path: "https://via.placeholder.com/300x200?text=中央美术学院附中考级",
+                        subjects: ["素描", "速写", "水粉", "油画"],
+                        link_url: "https://example.com/central-academy-exam"
+                    },
+                    {
+                        id: 6,
+                        name: "全国书法比赛",
+                        type: "赛事",
+                        min_age: 7,
+                        max_age: 80,
+                        description: "面向各年龄段的全国性书法比赛，设有硬笔、软笔等多个类别。比赛由中国书法家协会指导，旨在传承和发扬中国传统书法艺术。参赛作品将由书法名家评审，优秀作品将在全国巡展中展出。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国书法比赛",
+                        subjects: ["书法", "国画"],
+                        link_url: "https://example.com/calligraphy-competition"
+                    }
+                ];
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙堇艺术赛事考级匹配页面管理后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        /* 仙堇艺术赛事考级匹配系统管理后台样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+            background-attachment: fixed;
+            padding-bottom: 50px;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #a18cd1, #6a5acd);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .header h1 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-card {
+            padding: 15px;
+        }
+
+        .card-title {
+            color: #5e35b1;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #a18cd1;
+            box-shadow: 0 0 0 0.25rem rgba(161, 140, 209, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #9d50bb, #6a5acd);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(106, 90, 205, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #8e44ad, #5d4cb6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 90, 205, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(106, 90, 205, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268, #343a40);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .back-link {
+            color: #5e35b1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #4527a0;
+            text-decoration: underline;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #5e35b1;
+            border-color: #e9ecef #e9ecef #dee2e6;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #5e35b1;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-color: #dee2e6 #dee2e6 #fff;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-list {
+            margin-top: 20px;
+        }
+
+        .project-item {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .project-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #5e35b1;
+            margin-bottom: 10px;
+        }
+
+        .project-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .subject-badge {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .subject-badge.selected {
+            background-color: #5e35b1;
+            color: white;
+        }
+
+        .subject-selection {
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #a18cd1, #6a5acd);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .admin-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 0;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .project-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            .modal-dialog {
+                margin: 10px;
+            }
+        }
+
+        /* 登录页面样式 */
+        #loginSection {
+            display: block;
+        }
+
+        #adminSection {
+            display: none;
+        }
+
+        .invalid-feedback {
+            display: none;
+        }
+
+        /* 图片上传相关样式 */
+        .image-upload-container {
+            border: 2px dashed #a18cd1;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            background-color: rgba(161, 140, 209, 0.05);
+        }
+
+        .image-upload-container:hover {
+            background-color: rgba(161, 140, 209, 0.1);
+            border-color: #6a5acd;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: #a18cd1;
+            margin-bottom: 10px;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            cursor: pointer;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #9d50bb, #6a5acd);
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background: linear-gradient(135deg, #8e44ad, #5d4cb6);
+            transform: translateY(-2px);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .image-preview-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .image-option {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .image-option-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <h1>仙堇艺术赛事考级匹配页面管理后台</h1>
+        <p>管理赛事和考级项目信息</p>
+    </div>
+
+    <!-- 登录部分 -->
+    <div class="container" id="loginSection">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card login-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4">管理员登录</h5>
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="password" class="form-label">管理员密码</label>
+                                <input type="password" class="form-control" id="password" required>
+                                <div class="invalid-feedback" id="passwordError">
+                                    密码错误，请重试
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary px-4 py-2">登录</button>
+                            </div>
+                        </form>
+                        <div class="mt-3 text-center">
+                            <a href="index.html" class="back-link">
+                                <i class="bi bi-arrow-left"></i> 返回前台页面
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理后台部分 -->
+    <div class="container" id="adminSection">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>项目管理</h3>
+            <div>
+                <button id="addProjectBtn" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> 添加新项目
+                </button>
+                <button id="logoutBtn" class="btn btn-secondary ms-2">
+                    <i class="bi bi-box-arrow-right"></i> 退出登录
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="projectTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-projects" type="button" role="tab" aria-controls="all-projects" aria-selected="true">所有项目</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="competition-tab" data-bs-toggle="tab" data-bs-target="#competition-projects" type="button" role="tab" aria-controls="competition-projects" aria-selected="false">赛事</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam-projects" type="button" role="tab" aria-controls="exam-projects" aria-selected="false">考级</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="projectTabsContent">
+                    <div class="tab-pane fade show active" id="all-projects" role="tabpanel" aria-labelledby="all-tab">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="searchProject" placeholder="搜索项目...">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="filterSubject">
+                                    <option value="">所有科目</option>
+                                    <option value="素描">素描</option>
+                                    <option value="水彩">水彩</option>
+                                    <option value="水粉">水粉</option>
+                                    <option value="油画">油画</option>
+                                    <option value="漫画">漫画</option>
+                                    <option value="设计稿">设计稿</option>
+                                    <option value="手工">手工</option>
+                                    <option value="儿童画">儿童画</option>
+                                    <option value="板绘">板绘</option>
+                                    <option value="速写">速写</option>
+                                    <option value="书法">书法</option>
+                                    <option value="国画">国画</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="allProjectsList" class="project-list">
+                            <!-- 项目列表将在这里动态生成 -->
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">加载中...</span>
+                                </div>
+                                <p class="mt-2">正在加载项目列表...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="competition-projects" role="tabpanel" aria-labelledby="competition-tab">
+                        <div id="competitionProjectsList" class="project-list">
+                            <!-- 赛事项目列表将在这里动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="exam-projects" role="tabpanel" aria-labelledby="exam-tab">
+                        <div id="examProjectsList" class="project-list">
+                            <!-- 考级项目列表将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑项目模态框 -->
+    <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModalLabel">添加新项目</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="projectForm">
+                        <input type="hidden" id="projectId">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="projectName" class="form-label">项目名称</label>
+                                <input type="text" class="form-control" id="projectName" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="projectType" class="form-label">项目类型</label>
+                                <select class="form-select" id="projectType" required>
+                                    <option value="" selected disabled>请选择类型</option>
+                                    <option value="赛事">赛事</option>
+                                    <option value="考级">考级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="minAge" class="form-label">最小适合年龄</label>
+                                <input type="number" class="form-control" id="minAge" min="3" max="100" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="maxAge" class="form-label">最大适合年龄</label>
+                                <input type="number" class="form-control" id="maxAge" min="3" max="100" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">项目描述</label>
+                            <textarea class="form-control" id="projectDescription" rows="4"></textarea>
+                        </div>
+                        
+                        <!-- 新的图片上传区域 -->
+                        <div class="mb-3">
+                            <label class="form-label">项目图片</label>
+                            <div class="image-options mb-2">
+                                <div class="image-option">
+                                    <input type="radio" class="form-check-input" id="imageOptionUpload" name="imageOption" value="upload" checked>
+                                    <label class="form-check-label" for="imageOptionUpload">上传本地图片</label>
+                                </div>
+                                <div class="image-option">
+                                    <input type="radio" class="form-check-input" id="imageOptionUrl" name="imageOption" value="url">
+                                    <label class="form-check-label" for="imageOptionUrl">使用图片URL</label>
+                                </div>
+                            </div>
+                            
+                            <!-- 本地图片上传 -->
+                            <div id="imageUploadSection">
+                                <div class="image-upload-container">
+                                    <div class="upload-icon">
+                                        <i class="bi bi-cloud-arrow-up"></i>
+                                    </div>
+                                    <label class="custom-file-upload">
+                                        <input type="file" id="projectImageFile" accept="image/*" style="display: none;">
+                                        选择图片文件
+                                    </label>
+                                    <div class="file-name" id="fileName">未选择文件</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 图片URL输入 -->
+                            <div id="imageUrlSection" style="display: none;">
+                                <input type="text" class="form-control" id="projectImage" placeholder="输入图片URL">
+                            </div>
+                            
+                            <!-- 图片预览 -->
+                            <div class="image-preview-container">
+                                <img id="imagePreview" class="image-preview" alt="图片预览" style="display: none;">
+                            </div>
+                            <input type="hidden" id="imageDataUrl">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="projectLink" class="form-label">项目详情链接</label>
+                            <input type="text" class="form-control" id="projectLink" placeholder="输入详情页面URL">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">适合美术科目</label>
+                            <div class="subject-selection" id="subjectSelection">
+                                <div class="subject-badge" data-subject="素描">素描</div>
+                                <div class="subject-badge" data-subject="水彩">水彩</div>
+                                <div class="subject-badge" data-subject="水粉">水粉</div>
+                                <div class="subject-badge" data-subject="油画">油画</div>
+                                <div class="subject-badge" data-subject="漫画">漫画</div>
+                                <div class="subject-badge" data-subject="设计稿">设计稿</div>
+                                <div class="subject-badge" data-subject="手工">手工</div>
+                                <div class="subject-badge" data-subject="儿童画">儿童画</div>
+                                <div class="subject-badge" data-subject="板绘">板绘</div>
+                                <div class="subject-badge" data-subject="速写">速写</div>
+                                <div class="subject-badge" data-subject="书法">书法</div>
+                                <div class="subject-badge" data-subject="国画">国画</div>
+                            </div>
+                            <div class="form-text">点击选择适合的科目（至少选择一个）</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveProjectBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认模态框 -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">确认删除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要删除项目 "<span id="deleteProjectName"></span>" 吗？</p>
+                    <p class="text-danger">此操作无法撤销！</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-footer">
+        <p>仙堇艺术赛事考级匹配系统 &copy; 2025</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 仙堇艺术赛事考级匹配系统管理后台脚本 - 本地版本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const loginSection = document.getElementById('loginSection');
+            const adminSection = document.getElementById('adminSection');
+            const loginForm = document.getElementById('loginForm');
+            const passwordInput = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const addProjectBtn = document.getElementById('addProjectBtn');
+            const saveProjectBtn = document.getElementById('saveProjectBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const searchProject = document.getElementById('searchProject');
+            const filterSubject = document.getElementById('filterSubject');
+            const imagePreview = document.getElementById('imagePreview');
+            const projectImage = document.getElementById('projectImage');
+            
+            // 图片上传相关元素
+            const imageOptionUpload = document.getElementById('imageOptionUpload');
+            const imageOptionUrl = document.getElementById('imageOptionUrl');
+            const imageUploadSection = document.getElementById('imageUploadSection');
+            const imageUrlSection = document.getElementById('imageUrlSection');
+            const projectImageFile = document.getElementById('projectImageFile');
+            const fileName = document.getElementById('fileName');
+            const imageDataUrl = document.getElementById('imageDataUrl');
+            
+            // 项目列表容器
+            const allProjectsList = document.getElementById('allProjectsList');
+            const competitionProjectsList = document.getElementById('competitionProjectsList');
+            const examProjectsList = document.getElementById('examProjectsList');
+            
+            // 当前选中的科目
+            let selectedSubjects = [];
+            // 当前要删除的项目ID
+            let deleteProjectId = null;
+            // 所有项目数据
+            let allProjects = [];
+            
+            // 管理员密码
+            const ADMIN_PASSWORD = "123456";
+            
+            // 登录表单提交事件
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const password = passwordInput.value;
+                
+                // 本地验证密码
+                if (password === ADMIN_PASSWORD) {
+                    // 登录成功，显示管理界面
+                    loginSection.style.display = 'none';
+                    adminSection.style.display = 'block';
+                    
+                    // 初始化管理界面
+                    initAdminPage();
+                } else {
+                    // 显示错误信息
+                    passwordInput.classList.add('is-invalid');
+                    passwordError.style.display = 'block';
+                }
+            });
+            
+            // 输入框获得焦点时隐藏错误信息
+            passwordInput.addEventListener('focus', function() {
+                passwordInput.classList.remove('is-invalid');
+                passwordError.style.display = 'none';
+            });
+            
+            // 初始化管理界面
+            function initAdminPage() {
+                // 加载项目列表
+                loadProjects();
+                
+                // 设置事件监听器
+                setupEventListeners();
+            }
+            
+            // 设置事件监听器
+            function setupEventListeners() {
+                // 退出登录
+                logoutBtn.addEventListener('click', function() {
+                    loginSection.style.display = 'block';
+                    adminSection.style.display = 'none';
+                    passwordInput.value = '';
+                });
+                
+                // 添加新项目
+                addProjectBtn.addEventListener('click', function() {
+                    openProjectModal();
+                });
+                
+                // 保存项目
+                saveProjectBtn.addEventListener('click', function() {
+                    saveProject();
+                });
+                
+                // 确认删除项目
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (deleteProjectId) {
+                        deleteProject(deleteProjectId);
+                    }
+                });
+                
+                // 搜索项目
+                searchProject.addEventListener('input', function() {
+                    filterProjects();
+                });
+                
+                // 按科目筛选
+                filterSubject.addEventListener('change', function() {
+                    filterProjects();
+                });
+                
+                // 图片选项切换
+                imageOptionUpload.addEventListener('change', function() {
+                    if (this.checked) {
+                        imageUploadSection.style.display = 'block';
+                        imageUrlSection.style.display = 'none';
+                    }
+                });
+                
+                imageOptionUrl.addEventListener('change', function() {
+                    if (this.checked) {
+                        imageUploadSection.style.display = 'none';
+                        imageUrlSection.style.display = 'block';
+                    }
+                });
+                
+                // 图片文件选择
+                projectImageFile.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        fileName.textContent = file.name;
+                        
+                        // 检查文件大小
+                        if (file.size > 1024 * 1024) { // 大于1MB
+                            alert('图片文件过大，请选择小于1MB的图片');
+                            // 清空选择
+                            this.value = '';
+                            fileName.textContent = '未选择文件';
+                            imagePreview.style.display = 'none';
+                            imageDataUrl.value = '';
+                            return;
+                        }
+                        
+                        // 读取文件并预览
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            try {
+                                const dataUrl = event.target.result;
+                                imagePreview.src = dataUrl;
+                                imagePreview.style.display = 'block';
+                                imageDataUrl.value = dataUrl;
+                            } catch (error) {
+                                console.error('图片处理错误:', error);
+                                alert('图片处理出错，请重试或选择其他图片');
+                                imagePreview.style.display = 'none';
+                                imageDataUrl.value = '';
+                            }
+                        };
+                        reader.onerror = function() {
+                            alert('读取图片文件失败，请重试');
+                            imagePreview.style.display = 'none';
+                            imageDataUrl.value = '';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        fileName.textContent = '未选择文件';
+                        imagePreview.style.display = 'none';
+                        imageDataUrl.value = '';
+                    }
+                });
+                
+                // URL图片输入变化时预览图片
+                projectImage.addEventListener('input', function() {
+                    const imageUrl = this.value.trim();
+                    if (imageUrl) {
+                        imagePreview.src = imageUrl;
+                        imagePreview.style.display = 'block';
+                        // 添加错误处理
+                        imagePreview.onerror = function() {
+                            alert('无法加载图片URL，请检查URL是否正确');
+                            imagePreview.style.display = 'none';
+                        };
+                    } else {
+                        imagePreview.style.display = 'none';
+                    }
+                });
+                
+                // 科目选择
+                const subjectBadges = document.querySelectorAll('.subject-badge');
+                subjectBadges.forEach(badge => {
+                    badge.addEventListener('click', function() {
+                        const subject = this.getAttribute('data-subject');
+                        if (this.classList.contains('selected')) {
+                            // 取消选择
+                            this.classList.remove('selected');
+                            selectedSubjects = selectedSubjects.filter(s => s !== subject);
+                        } else {
+                            // 选择
+                            this.classList.add('selected');
+                            selectedSubjects.push(subject);
+                        }
+                    });
+                });
+            }
+            
+            // 加载项目列表 - 本地版本使用模拟数据
+            function loadProjects() {
+                // 显示加载状态
+                allProjectsList.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p class="mt-2">正在加载项目列表...</p>
+                    </div>
+                `;
+                competitionProjectsList.innerHTML = '';
+                examProjectsList.innerHTML = '';
+                
+                try {
+                    // 从本地存储获取项目数据，如果没有则使用默认数据
+                    const savedProjects = localStorage.getItem('xianjunProjects');
+                    if (savedProjects) {
+                        allProjects = JSON.parse(savedProjects);
+                    } else {
+                        allProjects = getMockProjects();
+                        // 保存到本地存储
+                        localStorage.setItem('xianjunProjects', JSON.stringify(allProjects));
+                    }
+                    
+                    // 显示项目列表
+                    setTimeout(() => {
+                        displayProjects(allProjects);
+                    }, 300);
+                } catch (error) {
+                    console.error('加载项目数据错误:', error);
+                    allProjectsList.innerHTML = `
+                        <div class="alert alert-danger">
+                            加载项目数据出错，请刷新页面重试。
+                        </div>
+                    `;
+                }
+            }
+            
+            // 获取模拟项目数据
+            function getMockProjects() {
+                return [
+                    {
+                        id: 1,
+                        name: "全国青少年美术大赛",
+                        type: "赛事",
+                        min_age: 6,
+                        max_age: 18,
+                        description: "面向全国青少年的综合性美术比赛，设有多个组别和多种参赛类别。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国青少年美术大赛",
+                        subjects: ["素描", "水彩", "水粉", "油画", "漫画"],
+                        link_url: "https://example.com/youth-art-competition"
+                    },
+                    {
+                        id: 2,
+                        name: "中国美术学院考级",
+                        type: "考级",
+                        min_age: 5,
+                        max_age: 25,
+                        description: "由中国美术学院主办的全国性美术等级考试，共设十级。",
+                        image_path: "https://via.placeholder.com/300x200?text=中国美术学院考级",
+                        subjects: ["素描", "水彩", "水粉", "国画", "书法"],
+                        link_url: "https://example.com/art-academy-exam"
+                    },
+                    {
+                        id: 3,
+                        name: "国际儿童绘画展",
+                        type: "赛事",
+                        min_age: 4,
+                        max_age: 12,
+                        description: "国际性儿童绘画比赛，旨在发掘儿童艺术天赋，促进国际文化交流。",
+                        image_path: "https://via.placeholder.com/300x200?text=国际儿童绘画展",
+                        subjects: ["儿童画", "水彩", "手工"],
+                        link_url: "https://example.com/international-children-art"
+                    },
+                    {
+                        id: 4,
+                        name: "全国动漫设计大赛",
+                        type: "赛事",
+                        min_age: 12,
+                        max_age: 30,
+                        description: "面向青少年和青年的动漫设计比赛，包括原创角色、故事板、短篇漫画等类别。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国动漫设计大赛",
+                        subjects: ["漫画", "板绘", "设计稿"],
+                        link_url: "https://example.com/animation-design-competition"
+                    },
+                    {
+                        id: 5,
+                        name: "中央美术学院附中考级",
+                        type: "考级",
+                        min_age: 8,
+                        max_age: 18,
+                        description: "由中央美术学院附属中学举办的美术等级考试，注重基础技能的培养和评估。",
+                        image_path: "https://via.placeholder.com/300x200?text=中央美术学院附中考级",
+                        subjects: ["素描", "速写", "水粉", "油画"],
+                        link_url: "https://example.com/central-academy-exam"
+                    },
+                    {
+                        id: 6,
+                        name: "全国书法比赛",
+                        type: "赛事",
+                        min_age: 7,
+                        max_age: 80,
+                        description: "面向各年龄段的全国性书法比赛，设有硬笔、软笔等多个类别。",
+                        image_path: "https://via.placeholder.com/300x200?text=全国书法比赛",
+                        subjects: ["书法", "国画"],
+                        link_url: "https://example.com/calligraphy-competition"
+                    }
+                ];
+            }
+            
+            // 显示项目列表
+            function displayProjects(projects) {
+                // 清空列表
+                allProjectsList.innerHTML = '';
+                competitionProjectsList.innerHTML = '';
+                examProjectsList.innerHTML = '';
+                
+                // 检查是否有项目
+                if (projects.length === 0) {
+                    const noProjectsMessage = `
+                        <div class="alert alert-info">
+                            暂无项目数据，请点击"添加新项目"按钮创建项目。
+                        </div>
+                    `;
+                    allProjectsList.innerHTML = noProjectsMessage;
+                    competitionProjectsList.innerHTML = noProjectsMessage;
+                    examProjectsList.innerHTML = noProjectsMessage;
+                    return;
+                }
+                
+                // 分类项目
+                const competitions = projects.filter(p => p.type === '赛事');
+                const exams = projects.filter(p => p.type === '考级');
+                
+                // 创建项目列表HTML
+                const allProjectsHtml = createProjectListHtml(projects);
+                const competitionProjectsHtml = createProjectListHtml(competitions);
+                const examProjectsHtml = createProjectListHtml(exams);
+                
+                // 更新DOM
+                allProjectsList.innerHTML = allProjectsHtml;
+                competitionProjectsList.innerHTML = competitionProjectsHtml;
+                examProjectsList.innerHTML = examProjectsHtml;
+                
+                // 为编辑和删除按钮添加事件监听器
+                addProjectButtonListeners();
+            }
+            
+            // 创建项目列表HTML
+            function createProjectListHtml(projects) {
+                if (projects.length === 0) {
+                    return `
+                        <div class="alert alert-info">
+                            没有找到符合条件的项目。
+                        </div>
+                    `;
+                }
+                
+                let html = '';
+                
+                projects.forEach(project => {
+                    html += `
+                        <div class="project-item">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="${project.image_path || 'https://via.placeholder.com/100x100?text=无图片'}" 
+                                         alt="${project.name}" class="img-fluid rounded"
+                                         onerror="this.src='https://via.placeholder.com/100x100?text=图片加载失败'">
+                                </div>
+                                <div class="col-md-7">
+                                    <h5 class="project-title">${project.name}</h5>
+                                    <p class="project-info">
+                                        <span class="badge bg-primary">${project.type}</span> 
+                                        <small>适合年龄: ${project.min_age}-${project.max_age}岁</small>
+                                    </p>
+                                    <p class="project-info">
+                                        <small>科目: ${(project.subjects || []).join(', ')}</small>
+                                    </p>
+                                    <p class="project-info">
+                                        ${project.link_url ? `<a href="${project.link_url}" target="_blank" class="text-decoration-none"><i class="bi bi-link-45deg"></i> 详情链接</a>` : ''}
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="project-actions">
+                                        <button class="btn btn-sm btn-primary edit-project" data-id="${project.id}">
+                                            <i class="bi bi-pencil"></i> 编辑
+                                        </button>
+                                        <button class="btn btn-sm btn-danger delete-project" data-id="${project.id}" data-name="${project.name}">
+                                            <i class="bi bi-trash"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                return html;
+            }
+            
+            // 为项目按钮添加事件监听器
+            function addProjectButtonListeners() {
+                // 编辑按钮
+                document.querySelectorAll('.edit-project').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const projectId = parseInt(this.getAttribute('data-id'));
+                        editProject(projectId);
+                    });
+                });
+                
+                // 删除按钮
+                document.querySelectorAll('.delete-project').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const projectId = parseInt(this.getAttribute('data-id'));
+                        const projectName = this.getAttribute('data-name');
+                        confirmDeleteProject(projectId, projectName);
+                    });
+                });
+            }
+            
+            // 筛选项目
+            function filterProjects() {
+                const searchText = searchProject.value.toLowerCase();
+                const selectedSubject = filterSubject.value;
+                
+                // 筛选项目
+                const filteredProjects = allProjects.filter(project => {
+                    // 检查名称是否匹配搜索文本
+                    const nameMatch = project.name.toLowerCase().includes(searchText);
+                    
+                    // 检查是否匹配选中的科目
+                    const subjectMatch = !selectedSubject || (project.subjects && project.subjects.includes(selectedSubject));
+                    
+                    return nameMatch && subjectMatch;
+                });
+                
+                // 显示筛选后的项目
+                displayProjects(filteredProjects);
+            }
+            
+            // 打开项目模态框（添加新项目）
+            function openProjectModal() {
+                // 重置表单
+                document.getElementById('projectForm').reset();
+                document.getElementById('projectId').value = '';
+                document.getElementById('projectModalLabel').textContent = '添加新项目';
+                
+                // 重置科目选择
+                selectedSubjects = [];
+                document.querySelectorAll('.subject-badge').forEach(badge => {
+                    badge.classList.remove('selected');
+                });
+                
+                // 重置图片选择
+                fileName.textContent = '未选择文件';
+                imagePreview.style.display = 'none';
+                imageDataUrl.value = '';
+                projectImage.value = '';
+                
+                // 默认选择本地上传
+                imageOptionUpload.checked = true;
+                imageUploadSection.style.display = 'block';
+                imageUrlSection.style.display = 'none';
+                
+                // 显示模态框
+                const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+                modal.show();
+            }
+            
+            // 编辑项目
+            function editProject(projectId) {
+                try {
+                    // 查找项目
+                    const project = allProjects.find(p => p.id === projectId);
+                    
+                    if (!project) {
+                        alert('找不到项目信息');
+                        return;
+                    }
+                    
+                    // 设置表单值
+                    document.getElementById('projectId').value = project.id;
+                    document.getElementById('projectName').value = project.name;
+                    document.getElementById('projectType').value = project.type;
+                    document.getElementById('minAge').value = project.min_age;
+                    document.getElementById('maxAge').value = project.max_age;
+                    document.getElementById('projectDescription').value = project.description || '';
+                    
+                    // 处理图片
+                    if (project.image_path && project.image_path.startsWith('data:')) {
+                        // 如果是base64数据URL
+                        imageOptionUpload.checked = true;
+                        imageUploadSection.style.display = 'block';
+                        imageUrlSection.style.display = 'none';
+                        imageDataUrl.value = project.image_path;
+                        fileName.textContent = '已上传的图片';
+                    } else {
+                        // 如果是普通URL
+                        imageOptionUrl.checked = true;
+                        imageUploadSection.style.display = 'none';
+                        imageUrlSection.style.display = 'block';
+                        projectImage.value = project.image_path || '';
+                    }
+                    
+                    // 显示图片预览
+                    if (project.image_path) {
+                        imagePreview.src = project.image_path;
+                        imagePreview.style.display = 'block';
+                        // 添加错误处理
+                        imagePreview.onerror = function() {
+                            console.error('图片加载失败');
+                            imagePreview.src = 'https://via.placeholder.com/300x200?text=图片加载失败';
+                            imagePreview.style.display = 'block';
+                        };
+                    } else {
+                        imagePreview.style.display = 'none';
+                    }
+                    
+                    document.getElementById('projectLink').value = project.link_url || '';
+                    
+                    // 设置科目选择
+                    selectedSubjects = [...(project.subjects || [])];
+                    document.querySelectorAll('.subject-badge').forEach(badge => {
+                        const subject = badge.getAttribute('data-subject');
+                        if (selectedSubjects.includes(subject)) {
+                            badge.classList.add('selected');
+                        } else {
+                            badge.classList.remove('selected');
+                        }
+                    });
+                    
+                    // 更新模态框标题
+                    document.getElementById('projectModalLabel').textContent = '编辑项目';
+                    
+                    // 显示模态框
+                    const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+                    modal.show();
+                } catch (error) {
+                    console.error('编辑项目错误:', error);
+                    alert('编辑项目时出错，请重试');
+                }
+            }
+            
+            // 保存项目 - 本地版本使用模拟数据
+            function saveProject() {
+                try {
+                    // 获取表单数据
+                    const projectId = document.getElementById('projectId').value;
+                    const name = document.getElementById('projectName').value;
+                    const type = document.getElementById('projectType').value;
+                    const minAge = parseInt(document.getElementById('minAge').value);
+                    const maxAge = parseInt(document.getElementById('maxAge').value);
+                    const description = document.getElementById('projectDescription').value;
+                    const linkUrl = document.getElementById('projectLink').value;
+                    
+                    // 获取图片路径
+                    let imagePath = '';
+                    if (imageOptionUpload.checked) {
+                        // 使用本地上传的图片
+                        imagePath = imageDataUrl.value;
+                    } else {
+                        // 使用URL
+                        imagePath = projectImage.value;
+                    }
+                    
+                    // 验证表单
+                    if (!name || !type || isNaN(minAge) || isNaN(maxAge) || selectedSubjects.length === 0) {
+                        alert('请填写所有必填字段并至少选择一个科目');
+                        return;
+                    }
+                    
+                    if (minAge > maxAge) {
+                        alert('最小年龄不能大于最大年龄');
+                        return;
+                    }
+                    
+                    // 准备项目数据
+                    const projectData = {
+                        name,
+                        type,
+                        min_age: minAge,
+                        max_age: maxAge,
+                        description,
+                        image_path: imagePath,
+                        link_url: linkUrl,
+                        subjects: [...selectedSubjects]
+                    };
+                    
+                    // 显示保存中状态
+                    saveProjectBtn.disabled = true;
+                    saveProjectBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 保存中...';
+                    
+                    // 编辑现有项目或添加新项目
+                    if (projectId) {
+                        // 编辑现有项目
+                        const index = allProjects.findIndex(p => p.id === parseInt(projectId));
+                        if (index !== -1) {
+                            projectData.id = parseInt(projectId);
+                            allProjects[index] = projectData;
+                        }
+                    } else {
+                        // 添加新项目
+                        projectData.id = allProjects.length > 0 ? Math.max(...allProjects.map(p => p.id)) + 1 : 1;
+                        allProjects.push(projectData);
+                    }
+                    
+                    // 保存到本地存储
+                    try {
+                        localStorage.setItem('xianjunProjects', JSON.stringify(allProjects));
+                    } catch (storageError) {
+                        console.error('保存到本地存储错误:', storageError);
+                        alert('保存失败：图片可能过大，请使用较小的图片或使用图片URL');
+                        
+                        // 恢复按钮状态
+                        saveProjectBtn.disabled = false;
+                        saveProjectBtn.innerHTML = '保存';
+                        return;
+                    }
+                    
+                    // 关闭模态框
+                    const modalElement = document.getElementById('projectModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                    
+                    // 重新显示项目列表
+                    displayProjects(allProjects);
+                    
+                    // 显示成功消息
+                    alert(projectId ? '项目更新成功' : '项目添加成功');
+                    
+                    // 恢复按钮状态
+                    saveProjectBtn.disabled = false;
+                    saveProjectBtn.innerHTML = '保存';
+                } catch (error) {
+                    console.error('保存项目错误:', error);
+                    alert('保存项目时出错，请重试');
+                    
+                    // 确保按钮状态恢复
+                    saveProjectBtn.disabled = false;
+                    saveProjectBtn.innerHTML = '保存';
+                }
+            }
+            
+            // 确认删除项目
+            function confirmDeleteProject(projectId, projectName) {
+                // 设置要删除的项目ID
+                deleteProjectId = projectId;
+                
+                // 设置确认对话框内容
+                document.getElementById('deleteProjectName').textContent = projectName;
+                
+                // 显示确认对话框
+                const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                modal.show();
+            }
+            
+            // 删除项目 - 本地版本使用模拟数据
+            function deleteProject(projectId) {
+                try {
+                    // 显示删除中状态
+                    confirmDeleteBtn.disabled = true;
+                    confirmDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 删除中...';
+                    
+                    // 从数组中删除项目
+                    allProjects = allProjects.filter(p => p.id !== projectId);
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('xianjunProjects', JSON.stringify(allProjects));
+                    
+                    // 关闭确认对话框
+                    const modalElement = document.getElementById('deleteConfirmModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                    
+                    // 重新显示项目列表
+                    displayProjects(allProjects);
+                    
+                    // 显示成功消息
+                    alert('项目删除成功');
+                    
+                    // 恢复按钮状态
+                    confirmDeleteBtn.disabled = false;
+                    confirmDeleteBtn.innerHTML = '确认删除';
+                    
+                    // 清除要删除的项目ID
+                    deleteProjectId = null;
+                } catch (error) {
+                    console.error('删除项目错误:', error);
+                    alert('删除项目时出错，请重试');
+                    
+                    // 确保按钮状态恢复
+                    confirmDeleteBtn.disabled = false;
+                    confirmDeleteBtn.innerHTML = '确认删除';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
